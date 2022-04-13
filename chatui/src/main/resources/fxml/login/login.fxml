@@ -7,8 +7,27 @@
 <?import javafx.scene.layout.*?>
 
 <Pane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            prefHeight="400.0" prefWidth="600.0">
+      xmlns:fx="http://javafx.com/fxml"
+      prefHeight="415.0" prefWidth="540.0" id="login" stylesheets="@css/login.css">
+
+    <children>
+        <Pane id="operation" prefWidth="540" prefHeight="158">
+            <Label id="login_logo" styleClass="logo" layoutX="10" layoutY="5" prefWidth="200" prefHeight="15"
+                   text="憨憨语约"
+                   style="-fx-text-fill:#666666;"/>
+            <Button id="login_min" styleClass="min" layoutX="454" prefWidth="43" prefHeight="32"/>
+            <Button id="login_close" styleClass="close" layoutX="497" prefWidth="43" prefHeight="32"/>
+        </Pane>
+
+        <Pane id="headImg" layoutX="80" layoutY="200" prefWidth="100" prefHeight="100">
+
+            <TextField>
+                
+            </TextField>
 
     
+        </Pane>
+
+    </children>
+
 </Pane>

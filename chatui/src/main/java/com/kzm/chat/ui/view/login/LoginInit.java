@@ -16,7 +16,7 @@ public abstract class LoginInit extends UIObject  {
     
     private static final String VIEW_NAME="/fxml/login/login.fxml";
     
-    private ILoginEvent loginEvent;
+    protected ILoginEvent loginEvent;
     
     public Button login_min_btn; //登录窗口最小化
     public Button login_close_btn; //登录窗口退出
