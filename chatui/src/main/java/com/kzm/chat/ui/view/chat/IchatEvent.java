@@ -7,7 +7,7 @@ public interface IchatEvent {
     /**
      * 聊天窗口退出操作
      */
-    void  doQuie();
+    void  doQuit();
 
 
     /**

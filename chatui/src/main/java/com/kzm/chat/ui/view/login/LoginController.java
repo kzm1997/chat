@@ -1,8 +1,13 @@
 package com.kzm.chat.ui.view.login;
 
 import com.kzm.chat.ui.view.chat.IchatMethod;
+import javafx.event.ActionEvent;
+import javafx.fxml.Initializable;
 
-public class LoginController extends LoginInit implements ILoginMethod  {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class LoginController extends LoginInit implements ILoginMethod {
     
     private IchatMethod  chat;
     
@@ -14,6 +19,8 @@ public class LoginController extends LoginInit implements ILoginMethod  {
         this.chat=chat;
         
     }
+    
+
 
     @Override
     public void initView() {
@@ -35,5 +42,9 @@ public class LoginController extends LoginInit implements ILoginMethod  {
 
     public void doLoginSuccess() {
      //关闭登录窗口 ,打开聊天窗口
+        System.out.println(1132);
+        close();
+        chat.doShow();
     }
+
 }

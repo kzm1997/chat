@@ -13,14 +13,25 @@ public abstract class UIObject extends Stage {
 
     private double xOffset;
     private double yOffset;
+    
+    
+    public <T> T $(String id,Class<T>clazz){
+        return (T) root.lookup("#"+id);
+    }
 
     public void move() {
         root.setOnMousePressed(event -> {
-            xOffset =getX()-event.getSceneX();
-            yOffset=getY()-event.getSceneY();
+            xOffset = getX() - event.getScreenX();
+            yOffset = getY() - event.getScreenY();
             root.setCursor(Cursor.CLOSED_HAND);
         });
-        
+        root.setOnMouseDragged(event -> {
+            setX(event.getScreenX() + xOffset);
+            setY(event.getScreenY() + yOffset);
+        });
+        root.setOnMouseReleased(event -> {
+            root.setCursor(Cursor.DEFAULT);
+        });
     }
 
     public double x() {

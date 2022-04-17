@@ -11,7 +11,7 @@ public class ChatEvent implements IchatEvent {
     private Logger logger= LoggerFactory.getLogger(ChatEvent.class);
     
     @Override
-    public void doQuie() {
+    public void doQuit() {
         logger.info("退出登录");
         
     }

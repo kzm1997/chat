@@ -9,6 +9,6 @@ public class LoginEvent implements ILoginEvent {
     private Logger logger= LoggerFactory.getLogger(LoginEvent.class);
     
     public void doLoginCheck(String userId, String userPassword) {
-        
+           //获取channel
     }
 }
