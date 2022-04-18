@@ -69,3 +69,5 @@ buildNumber.properties
 *.iml
 out
 gen
+/chat-server/chat-aggreement/
+/chat-server/chat-aggreement/

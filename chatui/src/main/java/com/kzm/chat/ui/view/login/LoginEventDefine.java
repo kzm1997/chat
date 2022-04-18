@@ -36,7 +36,6 @@ public class LoginEventDefine {
     private void doEventLogin(){
         loginInit.login_btn.setOnAction(event->{
             loginEvent.doLoginCheck(loginInit.userNameFiled.getText(),loginInit.passwordField.getText());
-            loginMethod.doLoginSuccess(); //todo 在channel中
         });
     }
     

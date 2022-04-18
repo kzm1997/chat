@@ -11,6 +11,8 @@
     <modules>
         <module>chatui</module>
         <module>client</module>
+        <module>chat-server</module>
+        <module>chat-server/chat-aggreement</module>
     </modules>
 
 

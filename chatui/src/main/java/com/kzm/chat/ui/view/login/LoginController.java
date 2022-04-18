@@ -42,7 +42,6 @@ public class LoginController extends LoginInit implements ILoginMethod {
 
     public void doLoginSuccess() {
      //关闭登录窗口 ,打开聊天窗口
-        System.out.println(1132);
         close();
         chat.doShow();
     }
