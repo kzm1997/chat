@@ -23,12 +23,14 @@ public class LoginHandler extends SimpleChannelInboundHandler<LoginResponse> {
 
         if (!msg.isSuccess()) {
             logger.info("登录失败");
+            uiService.getLoginMethod().doLoginError();//登录失败逻辑
             return;
         }
         Platform.runLater(() -> {
              uiService.getLoginMethod().doLoginSuccess(); //跳转登录框
              //设置用户信息
              uiService.getChat().setUserInfo(msg.getUserId(),msg.getUserNickName(),msg.getUserHead());
+
 
         });
     }

@@ -37,7 +37,7 @@ public class LoginController extends LoginInit implements ILoginMethod {
     }
 
     public void doLoginError() {
-      //登录失败提示
+        errorLabel.setVisible(true);
     }
 
     public void doLoginSuccess() {

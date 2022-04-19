@@ -40,6 +40,8 @@
             </padding>
         </PasswordField>
 
+        <Label id="errorLabel" layoutX="230" layoutY="300" prefHeight="35" text="密码错误!" visible="false"></Label>
+
         <Button id="login_button" styleClass="login_button" layoutX="200" layoutY="345" prefWidth="250" prefHeight="45"
                 text="登录"></Button>
         

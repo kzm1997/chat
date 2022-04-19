@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -29,6 +30,8 @@ public abstract class LoginInit extends UIObject {
     public TextField userNameFiled; //登录名文本框
  
     public PasswordField passwordField; //密码文本
+
+    public Label errorLabel; //密码错误
     
     LoginInit(ILoginEvent loginEvent){
         this.loginEvent=loginEvent;
@@ -56,6 +59,8 @@ public abstract class LoginInit extends UIObject {
         login_btn=$("login_button",Button.class);
         userNameFiled=$("userId",TextField.class);
         passwordField=$("userPassword",PasswordField.class);
+        errorLabel=$("errorLabel",Label.class);
+
     }
     
     

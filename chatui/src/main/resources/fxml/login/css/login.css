@@ -68,5 +68,9 @@
     -fx-text-fill: #ffffff;
     -fx-text-fill: #1e211e;
 }
+#errorLabel{
+    -fx-text-fill: #ec1f1f;
+    -fx-font-size: 15px;
+}
 
 

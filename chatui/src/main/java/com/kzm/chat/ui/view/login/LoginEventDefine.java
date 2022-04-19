@@ -38,6 +38,9 @@ public class LoginEventDefine {
             loginEvent.doLoginCheck(loginInit.userNameFiled.getText(),loginInit.passwordField.getText());
         });
     }
+
+
+
     
     
 }
