@@ -2,6 +2,7 @@ package com.kzm.chat.client.event;
 
 import com.kzm.chat.client.infrastructure.util.BeanUtil;
 import com.kzm.chat.protocal.msg.MsgRequest;
+import com.kzm.chat.protocal.talk.DeTalkRequest;
 import com.kzm.chat.ui.view.chat.IchatEvent;
 import io.netty.channel.Channel;
 import org.slf4j.Logger;
@@ -30,5 +31,11 @@ public class ChatEvent implements IchatEvent {
         }
         //todo 群聊
 
+    }
+
+    @Override
+    public void doEventDelTalkUser(String userId, String talkId) {
+        Channel channel = BeanUtil.getBean("channel", Channel.class);
+        channel.writeAndFlush(new DeTalkRequest(userId,talkId));
     }
 }

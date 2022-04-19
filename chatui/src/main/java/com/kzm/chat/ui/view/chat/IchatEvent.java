@@ -20,6 +20,15 @@ public interface IchatEvent {
      * @param msgDate 发送消息时间
      */
     void doSendMsg(String userId, String talkId, Integer talkType, String msg, Integer msgType, Date msgDate);
+
+
+    /**
+     * 事件处理；删除指定对话框
+     *
+     * @param userId 用户ID
+     * @param talkId 对话框ID
+     */
+    void doEventDelTalkUser(String userId, String talkId);
     
     
 }

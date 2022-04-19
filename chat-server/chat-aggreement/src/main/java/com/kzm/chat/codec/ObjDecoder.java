@@ -12,7 +12,7 @@ public class ObjDecoder extends ByteToMessageDecoder {
 
 
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf in, List<Object> out) throws Exception {
-        System.out.println(1111);
+        
        if (in.readableBytes()<4){
            return;
        }
