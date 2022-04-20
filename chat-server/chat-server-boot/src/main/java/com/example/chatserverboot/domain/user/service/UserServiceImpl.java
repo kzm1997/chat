@@ -50,7 +50,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Async
     public void asyncAppendChatRecord(ChatRecordInfo chatRecordInfo) {
         userRepository.appendChatRecord(chatRecordInfo);
     }
