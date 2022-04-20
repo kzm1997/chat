@@ -5,6 +5,7 @@ import com.example.chatserverboot.domain.user.model.ChatRecordInfo;
 import com.example.chatserverboot.domain.user.model.TalkBoxInfo;
 import com.example.chatserverboot.domain.user.model.UserInfo;
 import com.example.chatserverboot.domain.user.repository.IUserRepository;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -46,5 +47,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<ChatRecordInfo> queryChatRecordInfoList(String talkId, String userId, Integer talkType) {
         return userRepository.queryChatRecordInfoList(talkId, userId, talkType);
+    }
+
+    @Override
+    @Async
+    public void asyncAppendChatRecord(ChatRecordInfo chatRecordInfo) {
+        userRepository.appendChatRecord(chatRecordInfo);
+    }
+
+    @Override
+    public void addTalkBoxInfo(String userId, String talkId, Integer talkType) {
+        userRepository.addTalkBoxInfo(userId, talkId, talkType);
     }
 }

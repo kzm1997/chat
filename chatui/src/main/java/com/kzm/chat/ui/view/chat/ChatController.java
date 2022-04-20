@@ -66,9 +66,6 @@ public class ChatController extends ChatInit implements IchatMethod {
         // 设置位置&选中
         chatView.updateTalkListIdxANdSelected(0, talkElement.pane(), talkElement.msgRemind(), idxFirst, selected, isRemind);
 
-
-
-
     }
 
     /**

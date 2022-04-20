@@ -4,12 +4,14 @@ import com.kzm.chat.client.application.UIService;
 import com.kzm.chat.protocal.login.LoginResponse;
 import com.kzm.chat.protocal.login.dto.ChatRecordDto;
 import com.kzm.chat.protocal.login.dto.ChatTalkDto;
+import com.kzm.chat.ui.view.chat.IchatMethod;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import javafx.application.Platform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.List;
 
 public class LoginHandler extends SimpleChannelInboundHandler<LoginResponse> {
@@ -32,7 +34,8 @@ public class LoginHandler extends SimpleChannelInboundHandler<LoginResponse> {
         }
         Platform.runLater(() -> {
              uiService.getLoginMethod().doLoginSuccess(); //跳转登录框
-             //设置用户信息
+            IchatMethod chat = uiService.getChat();
+            //设置用户信息
              uiService.getChat().setUserInfo(msg.getUserId(),msg.getUserNickName(),msg.getUserHead());
 
              //对话框
@@ -51,8 +54,10 @@ public class LoginHandler extends SimpleChannelInboundHandler<LoginResponse> {
                                  if (0==chatRecordDto.getMsgType()){
                                      uiService.getChat().addTalkMsgRight(chatRecordDto.getTalkId(), chatRecordDto.getMsgContent(), chatRecordDto.getMsgType(),
                                              chatRecordDto.getMsgDate(), true, false, false);
+                                     continue;
                                  }
-                                 if (1==chatRecordDto.getMsgType()){
+                                 //他人的消息
+                                 if (1==chatRecordDto.getMsgType()){ 
                                      uiService.getChat().addTalkMsgUserLeft(chatRecordDto.getTalkId(), chatRecordDto.getMsgContent(),
                                              chatRecordDto.getMsgType(), chatRecordDto.getMsgDate(), true, false, false);
                                  }
@@ -60,6 +65,10 @@ public class LoginHandler extends SimpleChannelInboundHandler<LoginResponse> {
                      }
                  });
             }
+
+
+
+            
         });
     }
 }

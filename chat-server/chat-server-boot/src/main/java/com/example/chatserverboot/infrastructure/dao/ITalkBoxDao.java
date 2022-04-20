@@ -10,4 +10,11 @@ import java.util.List;
 public interface ITalkBoxDao {
 
     List<TalkBox> queryTalkBoxList(@Param("userId") String userId);
+
+    int addTalkBox(TalkBox talkBox);
+
+    TalkBox queryTalkBox(String userId, String talkId);
+    
+    
+    
 }

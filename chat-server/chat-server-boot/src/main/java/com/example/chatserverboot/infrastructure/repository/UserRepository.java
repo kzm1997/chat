@@ -38,7 +38,6 @@ public class UserRepository implements IUserRepository {
     IChatRecordDao chatRecordDao;
 
 
-
     @Override
     public String queryUserPassword(String userId) {
         String password = userDao.queryUserPassword(userId);
@@ -79,10 +78,10 @@ public class UserRepository implements IUserRepository {
     public List<ChatRecordInfo> queryChatRecordInfoList(String talkId, String userId, Integer talkType) {
         List<ChatRecordInfo> chatRecordInfoList = new ArrayList<>();
         List<ChatRecord> list = new ArrayList<>();
-        if (Friend.getCode().equals(talkType)){
+        if (Friend.getCode().equals(talkType)) {
             list = chatRecordDao.queryUserChatRecordList(talkId, userId);
-        } else if (Group.getCode().equals(talkType)){
-            list =  chatRecordDao.queryGroupsChatRecordList(talkId, userId);
+        } else if (Group.getCode().equals(talkType)) {
+            list = chatRecordDao.queryGroupsChatRecordList(talkId, userId);
         }
         for (ChatRecord chatRecord : list) {
             ChatRecordInfo chatRecordInfo = new ChatRecordInfo();
@@ -94,5 +93,30 @@ public class UserRepository implements IUserRepository {
             chatRecordInfoList.add(chatRecordInfo);
         }
         return chatRecordInfoList;
+    }
+
+    @Override
+    public void appendChatRecord(ChatRecordInfo chatRecordInfo) {
+        ChatRecord chatRecord = new ChatRecord();
+        chatRecord.setUserId(chatRecordInfo.getUserId());
+        chatRecord.setFriendId(chatRecordInfo.getFriendId());
+        chatRecord.setMsgContent(chatRecordInfo.getMsgContent());
+        chatRecord.setMsgType(chatRecordInfo.getMsgType());
+        chatRecord.setMsgDate(chatRecordInfo.getMsgDate());
+        chatRecord.setTalkType(chatRecordInfo.getTalkType());
+        chatRecordDao.insertChatRecord(chatRecord);
+
+    }
+
+    @Override
+    public void addTalkBoxInfo(String userId, String talkId, Integer talkType) {
+        if (talkBoxDao.queryTalkBox(userId, talkId) != null) {
+            return;
+        }
+        TalkBox talkBox = new TalkBox();
+        talkBox.setUserId(userId);
+        talkBox.setTalkId(talkId);
+        talkBox.setTalkType(talkType);
+        talkBoxDao.addTalkBox(talkBox);
     }
 }

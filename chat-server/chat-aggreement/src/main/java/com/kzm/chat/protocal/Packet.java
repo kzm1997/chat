@@ -2,6 +2,8 @@ package com.kzm.chat.protocal;
 
 import com.kzm.chat.protocal.login.LoginRequest;
 import com.kzm.chat.protocal.login.LoginResponse;
+import com.kzm.chat.protocal.msg.MsgRequest;
+import com.kzm.chat.protocal.msg.MsgResponse;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,6 +15,9 @@ public abstract class Packet {
     static {
         packetType.put(Command.LoginRequest, LoginRequest.class);
         packetType.put(Command.LoginResponse, LoginResponse.class);
+        packetType.put(Command.MsgRequest, MsgRequest.class);
+        packetType.put(Command.MsgResponse, MsgResponse.class);
+        
     }
 
 

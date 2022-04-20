@@ -45,8 +45,26 @@ public class ElementInfoBox {
         nickName.setText(userNickName);
         nickName.getStyleClass().add("box_nickName");
         children.add(nickName);
+        
+        infoContentArrow=new Label();
+        infoContentArrow.setPrefSize(5,20);
+        infoContentArrow.setLayoutX(75);
+        infoContentArrow.setLayoutY(30);
+        infoContentArrow.getStyleClass().add("box_infoContent_arrow");
+        children.add(infoContentArrow);
 
-        switch (msgType){
+        infoContent = new TextArea();
+        infoContent.setPrefWidth(autoWidth);
+        infoContent.setPrefHeight(autoHeight);
+        infoContent.setLayoutX(80);
+        infoContent.setLayoutY(30);
+        infoContent.setWrapText(true);
+        infoContent.setEditable(false);
+        infoContent.setText(msg);
+        infoContent.getStyleClass().add("box_infoContent_left");
+        children.add(infoContent);
+
+/*        switch (msgType){
             case 0:
                 // 内容
                 infoContent = new TextArea();
@@ -60,7 +78,7 @@ public class ElementInfoBox {
                 infoContent.getStyleClass().add("box_infoContent_left");
                 children.add(infoContent);
                 break;
-            case 1:
+            case 1:  //表情
                 Label infoContentFace = new Label();
                 infoContentFace.setPrefWidth(60);
                 infoContentFace.setPrefHeight(40);
@@ -69,7 +87,8 @@ public class ElementInfoBox {
                 infoContentFace.setStyle(String.format("-fx-background-image: url('/fxml/face/img/%s.png');-fx-background-position: center center;-fx-background-repeat: no-repeat;-fx-background-color: #ffffff;-fx-border-width: 0 1px 1px 0;-fx-border-radius: 2px;-fx-background-radius: 2px;", msg));
                 children.add(infoContentFace);
                 break;
-        }
+        }*/
+        
         return pane;
     }
 
@@ -112,7 +131,18 @@ public class ElementInfoBox {
         infoContentArrow.getStyleClass().add("box_infoContent_arrow");
         children.add(infoContentArrow);
 
-        switch (msgType){
+        infoContent = new TextArea();
+        infoContent.setPrefWidth(autoWidth);
+        infoContent.setPrefHeight(autoHeight);
+        infoContent.setLayoutX(755 - autoWidth);
+        infoContent.setLayoutY(15);
+        infoContent.setWrapText(true);
+        infoContent.setEditable(false);
+        infoContent.setText(msg);
+        infoContent.getStyleClass().add("box_infoContent_right");
+        children.add(infoContent);
+
+/*        switch (msgType){
             case 0:
                 // 内容：文字
                 infoContent = new TextArea();
@@ -135,7 +165,7 @@ public class ElementInfoBox {
                 infoContentFace.setStyle(String.format("-fx-background-image: url('/fxml/face/img/%s.png');-fx-background-position: center center;-fx-background-repeat: no-repeat;-fx-background-color: #9eea6a;-fx-border-width: 0 1px 1px 0;-fx-border-radius: 2px;-fx-background-radius: 2px;", msg));
                 children.add(infoContentFace);
                 break;
-        }
+        }*/
 
         return pane;
     }

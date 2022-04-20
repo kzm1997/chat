@@ -19,5 +19,12 @@
         order by createTime desc
         limit 10
     </select>
+    
+    <insert id="insertChatRecord" parameterType="com.example.chatserverboot.infrastructure.po.ChatRecord">
+        insert into chat_record
+        (userId,friendId,talkType,msgContent,msgType,msgDate,createTime,updateTime)
+        values 
+        (#{userId},#{friendId},#{talkType},#{msgContent},#{msgType},#{msgDate},now(),now())
+    </insert>
 
 </mapper>

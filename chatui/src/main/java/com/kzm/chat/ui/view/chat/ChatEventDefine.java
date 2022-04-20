@@ -136,7 +136,8 @@ public class ChatEventDefine {
         //发送消息
         chatEvent.doSendMsg(chatInit.userId, talkBoxData.getTalkId(), talkBoxData.getTalkType(), msg, 0, msgDate);
 
-        //发送事件给自己添加消息
+        //发送事件给自己添加消息 应该放到信道去
+        chatMethod.addTalkMsgRight(talkBoxData.getTalkId(), msg, 0, msgDate, true, true, false);
 
         txt_input.clear();
 

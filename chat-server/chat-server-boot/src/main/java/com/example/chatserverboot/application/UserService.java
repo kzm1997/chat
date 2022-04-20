@@ -43,4 +43,19 @@ public interface UserService {
      * @return 聊天记录(10条)
      */
     List<ChatRecordInfo> queryChatRecordInfoList(String talkId, String userId, Integer talkType);
+
+    /**
+     * 异步添加聊天记录
+     *
+     * @param chatRecordInfo 聊天记录信息
+     */
+    void asyncAppendChatRecord(ChatRecordInfo chatRecordInfo);
+    /**
+     * 添加对话框
+     *
+     * @param userId   用户ID
+     * @param talkId   好友ID
+     * @param talkType 对话框类型[0好友、1群组]
+     */
+    void addTalkBoxInfo(String userId, String talkId, Integer talkType);
 }

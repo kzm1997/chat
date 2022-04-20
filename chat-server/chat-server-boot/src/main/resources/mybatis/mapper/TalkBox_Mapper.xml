@@ -8,4 +8,15 @@
     <select id="queryTalkBoxList" parameterType="java.lang.String" resultType="com.example.chatserverboot.infrastructure.po.TalkBox">
         select talkId,talkType from talk_box where userId=#{userId}
     </select>
+    
+    <insert id="addTalkBox"  parameterType="com.example.chatserverboot.infrastructure.po.TalkBox">
+        insert into talk_box
+        (userId,talkId,talkType,createTime,updateTime)
+        values 
+        (#{userId},#{talkId},#{talkType},now(),now())
+    </insert>
+
+    <select id="queryTalkBox" parameterType="java.lang.String" resultType="com.example.chatserverboot.infrastructure.po.TalkBox">
+        select id from talk_box where userId = #{userId} and talkId = #{talkId}
+    </select>
 </mapper>
