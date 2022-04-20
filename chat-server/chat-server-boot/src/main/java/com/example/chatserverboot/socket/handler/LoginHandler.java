@@ -113,7 +113,6 @@ public class LoginHandler extends MyBizHandler<LoginRequest> {
         }
 
 
-
         channel.writeAndFlush(loginResponse);
 
 

@@ -50,25 +50,24 @@ public class ChatController extends ChatInit implements IchatMethod {
         Button button = $("bar_portrait", Button.class);
         button.setStyle(String.format("-fx-background-image: url('/fxml/chat/img/head/%s.png')", userHead));
     }
-    
-    
+
 
     @Override
     public void addTalkMsgUserLeft(String talkId, String msg, Integer msgType, Date msgDate, Boolean idxFirst, Boolean selected, Boolean isRemind) {
-        ElemntTalk elemntTalk = CacheUtil.talkMap.get(talkId);
-        ListView<Pane> listView = elemntTalk.infoBoxList();
+        ElemntTalk talkElement = CacheUtil.talkMap.get(talkId);
+        ListView<Pane> listView = talkElement.infoBoxList();
         TalkData talkUserData = (TalkData) listView.getUserData();
         Pane left = new ElementInfoBox().Left(talkUserData.getTalkName(), talkUserData.getTalkHead(), msg, msgType);
-
-        //消息填充
+        // 消息填充
         listView.getItems().add(left);
-        //滚动条
+        // 滚动条
         listView.scrollTo(left);
-        elemntTalk.fillMsgSketch(0 == msgType ? msg : "[表情]", msgDate);
-        //设置位置&选中
-        chatView.updateTalkListIdxANdSelected(0, elemntTalk.pane(), elemntTalk.msgRemind(), idxFirst, selected, isRemind);
-        //填充对话框聊天窗口
-        fillInfoBox(elemntTalk, talkUserData.getTalkName());
+        talkElement.fillMsgSketch(0 == msgType ? msg : "[表情]", msgDate);
+        // 设置位置&选中
+        chatView.updateTalkListIdxANdSelected(0, talkElement.pane(), talkElement.msgRemind(), idxFirst, selected, isRemind);
+
+
+
 
     }
 
@@ -98,30 +97,30 @@ public class ChatController extends ChatInit implements IchatMethod {
     @Override
     public void addTalkBox(int talkIdx, Integer talkType, String talkId, String talkName, String talkHead, String talkSketch, Date talkDate, Boolean selected) {
         //填充到对话框
-        ListView<Pane> talkList=$("talkList",ListView.class);
+        ListView<Pane> talkList = $("talkList", ListView.class);
         //判断对话框是否有该对象
-        ElemntTalk elemntTalk=  CacheUtil.talkMap.get(talkId);
-        
-        if (null!=elemntTalk){
-            Node talkNode=talkList.lookup("#"+ Ids.ELementTalkId.createTalkPaneId(talkId));
-            if (null==talkNode){
-                talkList.getItems().add(talkIdx,elemntTalk.pane());
+        ElemntTalk elemntTalk = CacheUtil.talkMap.get(talkId);
+
+        if (null != elemntTalk) {
+            Node talkNode = talkList.lookup("#" + Ids.ELementTalkId.createTalkPaneId(talkId));
+            if (null == talkNode) {
+                talkList.getItems().add(talkIdx, elemntTalk.pane());
                 //填充对话框消息栏
-                fillInfoBox(elemntTalk,talkName);
+                fillInfoBox(elemntTalk, talkName);
             }
-            if (selected){
+            if (selected) {
                 //设置选中
                 talkList.getSelectionModel().select(elemntTalk.pane());
             }
             //填充对话框消息栏
-            fillInfoBox(elemntTalk,talkName);
+            fillInfoBox(elemntTalk, talkName);
             return;
         }
-        ElemntTalk talkElement=new ElemntTalk(talkId,talkType,talkName,talkHead,talkSketch,talkDate);
-        CacheUtil.talkMap.put(talkId,talkElement);
+        ElemntTalk talkElement = new ElemntTalk(talkId, talkType, talkName, talkHead, talkSketch, talkDate);
+        CacheUtil.talkMap.put(talkId, talkElement);
         //填充到对话框
         ObservableList<Pane> items = talkList.getItems();
-        Pane  talkElementPane= talkElement.pane();
+        Pane talkElementPane = talkElement.pane();
         if (talkIdx >= 0) {
             items.add(talkIdx, talkElementPane);  // 添加到第一个位置
         } else {
@@ -163,6 +162,13 @@ public class ChatController extends ChatInit implements IchatMethod {
 
     @Override
     public void addTalkMsgRight(String talkId, String msg, Integer msgType, Date msgData, Boolean idxFirst, Boolean selected, Boolean isRemind) {
-
+        ElemntTalk talkElement = CacheUtil.talkMap.get(talkId);
+        ListView<Pane> listView = talkElement.infoBoxList();
+        Pane right = new ElementInfoBox().right(userNickName, userNead, msg, msgType);
+        //消息填充
+        listView.getItems().add(right);
+        listView.scrollTo(right);
+        talkElement.fillMsgSketch(0==msgType?msg:"[表情]",msgData);
+        chatView.updateTalkListIdxANdSelected(0,talkElement.pane(),talkElement.msgRemind(),idxFirst,selected,isRemind);
     }
 }
