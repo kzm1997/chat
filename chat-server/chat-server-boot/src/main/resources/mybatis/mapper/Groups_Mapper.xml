@@ -5,6 +5,6 @@
 <mapper namespace="com.example.chatserverboot.infrastructure.dao.IGroupsDao">
 
     <select id="queryGroupsById" parameterType="java.lang.String" resultType="com.example.chatserverboot.infrastructure.po.Groups">
-        SELECT groupId, groupName, groupHead FROM groups where groupId = #{groupId}
+        SELECT groupId, groupName, groupHead FROM `groups` where groupId = #{groupId}
     </select>
 </mapper>

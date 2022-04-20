@@ -62,7 +62,7 @@ public class ElemntTalk {
         msgSketch.setLayoutX(80);
         msgSketch.setLayoutY(40);
         msgSketch.getStyleClass().add("element_nickName");
-        children.add(nickName);
+        children.add(msgSketch);
 
         //信息时间
         msgData=new Label();
