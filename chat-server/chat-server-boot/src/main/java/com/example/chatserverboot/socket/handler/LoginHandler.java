@@ -2,14 +2,22 @@ package com.example.chatserverboot.socket.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.example.chatserverboot.application.UserService;
+import com.example.chatserverboot.domain.user.model.ChatRecordInfo;
+import com.example.chatserverboot.domain.user.model.TalkBoxInfo;
 import com.example.chatserverboot.domain.user.model.UserInfo;
+import com.example.chatserverboot.infrastructure.common.Constants;
 import com.example.chatserverboot.infrastructure.common.SocketChannelUtil;
 import com.example.chatserverboot.socket.MyBizHandler;
 import com.kzm.chat.protocal.login.LoginRequest;
 import com.kzm.chat.protocal.login.LoginResponse;
+import com.kzm.chat.protocal.login.dto.ChatRecordDto;
+import com.kzm.chat.protocal.login.dto.ChatTalkDto;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 public class LoginHandler extends MyBizHandler<LoginRequest> {
@@ -42,6 +50,69 @@ public class LoginHandler extends MyBizHandler<LoginRequest> {
         loginResponse.setUserHead(userInfo.getUserHead());
         loginResponse.setUserId(userInfo.getUserId());
         loginResponse.setUserNickName(userInfo.getUserNickName());
+
+        // 3.2 对话框
+        List<TalkBoxInfo> talkBoxInfoList = userService.queryTalkBoxInfoList(msg.getUserId());
+        for (TalkBoxInfo talkBoxInfo : talkBoxInfoList) {
+            ChatTalkDto chatTalk=new ChatTalkDto();
+            chatTalk.setTalkId(talkBoxInfo.getTalkId());
+            chatTalk.setTalkType(talkBoxInfo.getTalkType());
+            chatTalk.setTalkName(talkBoxInfo.getTalkName());
+            chatTalk.setTalkHead(talkBoxInfo.getTalkHead());
+            chatTalk.setTalkSketch(talkBoxInfo.getTalkSketch());
+            chatTalk.setTalkDate(talkBoxInfo.getTalkDate());
+            loginResponse.getChatTalkList().add(chatTalk);
+
+            // 好友；聊天消息
+            if (Constants.TalkType.Friend.getCode().equals(talkBoxInfo.getTalkType())) {
+                List<ChatRecordDto> chatRecordDtoList = new ArrayList<>();
+                List<ChatRecordInfo> chatRecordInfoList = userService.queryChatRecordInfoList(talkBoxInfo.getTalkId(), msg.getUserId(), Constants.TalkType.Friend.getCode());
+                for (ChatRecordInfo chatRecordInfo : chatRecordInfoList) {
+                    ChatRecordDto chatRecordDto = new ChatRecordDto();
+                    chatRecordDto.setTalkId(talkBoxInfo.getTalkId());
+                    boolean msgType = msg.getUserId().equals(chatRecordInfo.getUserId());
+                    // 自己发的消息
+                    if (msgType) {
+                        chatRecordDto.setUserId(chatRecordInfo.getUserId());
+                        chatRecordDto.setMsgUserType(0); // 消息类型[0自己/1好友]
+                    }
+                    // 好友发的消息
+                    else {
+                        chatRecordDto.setUserId(chatRecordInfo.getFriendId());
+                        chatRecordDto.setMsgUserType(1); // 消息类型[0自己/1好友]
+                    }
+                    chatRecordDto.setMsgContent(chatRecordInfo.getMsgContent());
+                    chatRecordDto.setMsgType(chatRecordInfo.getMsgType());
+                    chatRecordDto.setMsgDate(chatRecordInfo.getMsgDate());
+                    chatRecordDtoList.add(chatRecordDto);
+                }
+                chatTalk.setChatRecordList(chatRecordDtoList);
+            }
+            // 群组；聊天消息
+            else if (Constants.TalkType.Group.getCode().equals(talkBoxInfo.getTalkType())) {
+                List<ChatRecordDto> chatRecordDtoList = new ArrayList<>();
+                List<ChatRecordInfo> chatRecordInfoList = userService.queryChatRecordInfoList(talkBoxInfo.getTalkId(), msg.getUserId(), Constants.TalkType.Group.getCode());
+                for (ChatRecordInfo chatRecordInfo : chatRecordInfoList) {
+                    UserInfo memberInfo = userService.getUserInfo(chatRecordInfo.getUserId());
+                    ChatRecordDto chatRecordDto = new ChatRecordDto();
+                    chatRecordDto.setTalkId(talkBoxInfo.getTalkId());
+                    chatRecordDto.setUserId(memberInfo.getUserId());
+                    chatRecordDto.setUserNickName(memberInfo.getUserNickName());
+                    chatRecordDto.setUserHead(memberInfo.getUserHead());
+                    chatRecordDto.setMsgContent(chatRecordInfo.getMsgContent());
+                    chatRecordDto.setMsgDate(chatRecordInfo.getMsgDate());
+                    boolean msgType = msg.getUserId().equals(chatRecordInfo.getUserId());
+                    chatRecordDto.setMsgUserType(msgType ? 0 : 1); // 消息类型[0自己/1好友]
+                    chatRecordDto.setMsgType(chatRecordInfo.getMsgType());
+                    chatRecordDtoList.add(chatRecordDto);
+                }
+                chatTalk.setChatRecordList(chatRecordDtoList);
+            }
+
+
+        }
+
+
 
         channel.writeAndFlush(loginResponse);
 

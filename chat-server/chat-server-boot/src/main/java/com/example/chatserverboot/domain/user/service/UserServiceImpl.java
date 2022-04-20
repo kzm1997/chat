@@ -1,12 +1,15 @@
 package com.example.chatserverboot.domain.user.service;
 
 import com.example.chatserverboot.application.UserService;
+import com.example.chatserverboot.domain.user.model.ChatRecordInfo;
+import com.example.chatserverboot.domain.user.model.TalkBoxInfo;
 import com.example.chatserverboot.domain.user.model.UserInfo;
 import com.example.chatserverboot.domain.user.repository.IUserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
 
 @Service
@@ -33,5 +36,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserInfo getUserInfo(String userId) {
         return userRepository.queryUserInfo(userId);
+    }
+
+    @Override
+    public List<TalkBoxInfo> queryTalkBoxInfoList(String userId) {
+        return userRepository.queryTalkBoxInfoList(userId);
+    }
+
+    @Override
+    public List<ChatRecordInfo> queryChatRecordInfoList(String talkId, String userId, Integer talkType) {
+        return userRepository.queryChatRecordInfoList(talkId, userId, talkType);
     }
 }
