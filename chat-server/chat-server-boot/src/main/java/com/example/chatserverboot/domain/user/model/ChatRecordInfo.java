@@ -25,6 +25,14 @@ public class ChatRecordInfo {
         this.talkType = Constants.TalkType.Friend.getCode();
     }
 
+    public ChatRecordInfo(String userId, String friendId, String msgContent, Integer msgType, Date msgDate, Integer talkType) {
+        this.userId = userId;
+        this.friendId = friendId;
+        this.msgContent = msgContent;
+        this.msgType = msgType;
+        this.msgDate = msgDate;
+        this.talkType = talkType;
+    }
 
     public String getUserId() {
         return userId;

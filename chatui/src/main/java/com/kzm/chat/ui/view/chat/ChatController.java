@@ -165,7 +165,28 @@ public class ChatController extends ChatInit implements IchatMethod {
         //消息填充
         listView.getItems().add(right);
         listView.scrollTo(right);
-        talkElement.fillMsgSketch(0==msgType?msg:"[表情]",msgData);
-        chatView.updateTalkListIdxANdSelected(0,talkElement.pane(),talkElement.msgRemind(),idxFirst,selected,isRemind);
+        talkElement.fillMsgSketch(0 == msgType ? msg : "[表情]", msgData);
+        chatView.updateTalkListIdxANdSelected(0, talkElement.pane(), talkElement.msgRemind(), idxFirst, selected, isRemind);
+    }
+
+
+    @Override
+    public void addTalkMsgGroupLeft(String talkId, String userId, String userNickName, String userHead, String msg, Integer msgType, Date msgDate, Boolean idxFirst, Boolean selected, Boolean isRemind) {
+        if (super.userId.equals(userId)) return;
+        ElemntTalk elemntTalk = CacheUtil.talkMap.get(talkId);
+        if (elemntTalk==null){
+
+        }
+        ListView<Pane> listView = elemntTalk.infoBoxList();
+        Pane left=new ElementInfoBox().Left(userNickName,userHead,msg,msgType);
+        //消息填充
+        listView.getItems().add(left);
+        //滚动
+        listView.scrollTo(left);
+
+        elemntTalk.fillMsgSketch(0==msgType?userNickName+":"+msg:userNickName+":[表情]",msgDate);
+        //设置位置&选中
+        chatView.updateTalkListIdxANdSelected(1,elemntTalk.pane(),elemntTalk.msgRemind(),idxFirst,selected,isRemind);
+
     }
 }

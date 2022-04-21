@@ -1,6 +1,7 @@
 package com.kzm.chat.client.event;
 
 import com.kzm.chat.client.infrastructure.util.BeanUtil;
+import com.kzm.chat.protocal.msg.MsgGroupRequest;
 import com.kzm.chat.protocal.msg.MsgRequest;
 import com.kzm.chat.protocal.talk.DeTalkRequest;
 import com.kzm.chat.ui.view.chat.IchatEvent;
@@ -30,6 +31,9 @@ public class ChatEvent implements IchatEvent {
             channel.writeAndFlush(new MsgRequest(userId,talkId,msg,msgType,msgDate));
         }
         //todo 群聊
+        if (1==talkType){
+            channel.writeAndFlush(new MsgGroupRequest(talkId,userId,msg,msgType,msgDate));
+        }
 
     }
 
