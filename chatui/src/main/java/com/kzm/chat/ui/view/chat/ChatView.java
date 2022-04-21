@@ -2,6 +2,11 @@ package com.kzm.chat.ui.view.chat;
 
 import com.kzm.chat.ui.view.chat.data.RemindCount;
 import com.kzm.chat.ui.view.chat.data.TalkBoxData;
+import com.kzm.chat.ui.view.chat.element.group_bar_friend.ElementFriendGroupList;
+import com.kzm.chat.ui.view.chat.element.group_bar_friend.ElementFriendTag;
+import com.kzm.chat.ui.view.chat.element.group_bar_friend.ElementFriendUserList;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Pane;
@@ -21,6 +26,12 @@ public class ChatView {
         this.ichatEvent = chatEvent;
 
         //1.好友列表添加工具方法('新朋友')
+
+        //3. 好友群组框体
+        addFriendGroupList();
+        //4. 好友框体
+        addFriendUserList();
+
 
     }
 
@@ -95,5 +106,54 @@ public class ChatView {
         int count = remindCount.getCount() + 1;
         msgRemindLabel.setUserData(new RemindCount(count));
         msgRemindLabel.setText(String.valueOf(count));
+    }
+
+    /**
+     *  填充对话列表 & 对话框名称
+     * @param id
+     * @param name
+     * @param node
+     */
+    void setContentPaneBox(String id, String name, Node node){
+        //填充对话列表
+        Pane content_pane_box=chatInit.$("content_pane_box",Pane.class);
+        content_pane_box.setUserData(id);
+        content_pane_box.getChildren().clear();
+        content_pane_box.getChildren().add(node);
+
+        //对话框名称
+        Label info_name=chatInit.$("content_name",Label.class);
+        info_name.setText(name);
+    }
+
+
+    /**
+     * 好友群组框体
+     */
+    private void addFriendGroupList() {
+        ListView<Pane> friendList = chatInit.$("friendList", ListView.class);
+        ObservableList<Pane> items = friendList.getItems();
+
+        ElementFriendTag elementFriendTag = new ElementFriendTag("群聊");
+        items.add(elementFriendTag.pane());
+
+        ElementFriendGroupList element = new ElementFriendGroupList();
+        Pane pane = element.pane();
+        items.add(pane);
+    }
+
+    /**
+     * 好友框体
+     */
+    private void addFriendUserList() {
+        ListView<Pane> friendList = chatInit.$("friendList", ListView.class);
+        ObservableList<Pane> items = friendList.getItems();
+
+        ElementFriendTag elementFriendTag = new ElementFriendTag("好友");
+        items.add(elementFriendTag.pane());
+
+        ElementFriendUserList element = new ElementFriendUserList();
+        Pane pane = element.pane();
+        items.add(pane);
     }
 }

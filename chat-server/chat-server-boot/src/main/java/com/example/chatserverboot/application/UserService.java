@@ -1,8 +1,6 @@
 package com.example.chatserverboot.application;
 
-import com.example.chatserverboot.domain.user.model.ChatRecordInfo;
-import com.example.chatserverboot.domain.user.model.TalkBoxInfo;
-import com.example.chatserverboot.domain.user.model.UserInfo;
+import com.example.chatserverboot.domain.user.model.*;
 
 import java.util.List;
 
@@ -58,4 +56,19 @@ public interface UserService {
      * @param talkType 对话框类型[0好友、1群组]
      */
     void addTalkBoxInfo(String userId, String talkId, Integer talkType);
+
+    /**
+     * 查询个人用户群组列表
+     * @param userId
+     * @return
+     */
+    List<GroupsInfo> queryUserGroupInfoList(String userId);
+
+    /**
+     * 查询用户好友列表
+     * @param userId
+     * @return
+     */
+    List<UserFriendInfo> queryUserFriendInfoList(String userId);
+
 }

@@ -4,6 +4,8 @@ import com.kzm.chat.client.application.UIService;
 import com.kzm.chat.protocal.login.LoginResponse;
 import com.kzm.chat.protocal.login.dto.ChatRecordDto;
 import com.kzm.chat.protocal.login.dto.ChatTalkDto;
+import com.kzm.chat.protocal.login.dto.GroupsDto;
+import com.kzm.chat.protocal.login.dto.UserFriendDto;
 import com.kzm.chat.ui.view.chat.IchatMethod;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -45,30 +47,62 @@ public class LoginHandler extends SimpleChannelInboundHandler<LoginResponse> {
                      uiService.getChat().addTalkBox(0, talk.getTalkType(), talk.getTalkId(), talk.getTalkName(), talk.getTalkHead(), talk.getTalkSketch(), talk.getTalkDate(), true);
                      switch (talk.getTalkType()){
                        //好友
-                         case 0:
-                             List<ChatRecordDto> userRecordList=talk.getChatRecordList();
-                             if (null==userRecordList||userRecordList.isEmpty())return;
-                             for (int i=userRecordList.size()-1;i>=0;i--){
+                         case 0: {
+                             List<ChatRecordDto> userRecordList = talk.getChatRecordList();
+                             if (null == userRecordList || userRecordList.isEmpty()) return;
+                             for (int i = userRecordList.size() - 1; i >= 0; i--) {
                                  ChatRecordDto chatRecordDto = userRecordList.get(i);
                                  //自己的消息
-                                 if (0==chatRecordDto.getMsgType()){
+                                 if (0 == chatRecordDto.getMsgType()) {
                                      uiService.getChat().addTalkMsgRight(chatRecordDto.getTalkId(), chatRecordDto.getMsgContent(), chatRecordDto.getMsgType(),
                                              chatRecordDto.getMsgDate(), true, false, false);
                                      continue;
                                  }
                                  //他人的消息
-                                 if (1==chatRecordDto.getMsgType()){ 
+                                 if (1 == chatRecordDto.getMsgType()) {
                                      uiService.getChat().addTalkMsgUserLeft(chatRecordDto.getTalkId(), chatRecordDto.getMsgContent(),
                                              chatRecordDto.getMsgType(), chatRecordDto.getMsgDate(), true, false, false);
                                  }
                              }
+                             break;
+                         }
+                         case 1:{
+                             List<ChatRecordDto> groupRecordList = talk.getChatRecordList();
+                             if (groupRecordList==null||groupRecordList.isEmpty())return;
+                             for (int i=groupRecordList.size()-1;i>=0;i--){
+                                 ChatRecordDto chatRecordDto = groupRecordList.get(i);
+                                 //自己的消息
+                                 if (0==chatRecordDto.getMsgType()){
+                                     chat.addTalkMsgRight(chatRecordDto.getTalkId(),chatRecordDto.getMsgContent(),chatRecordDto.getMsgType(),
+                                             chatRecordDto.getMsgDate(),true,false,false);
+                                 }
+                                 //他人消息
+                                 if (1==chatRecordDto.getMsgType()){
+                                     chat.addTalkMsgUserLeft(chatRecordDto.getTalkId(),chatRecordDto.getMsgContent(),chatRecordDto.getMsgType(),
+                                             chatRecordDto.getMsgDate(),true,false,false);
+                                 }
+                             }
+                         }
                      }
                  });
             }
 
+            //群组
+            List<GroupsDto> groupsLIst = msg.getGroupsLIst();
+            if (groupsLIst!=null){
+                groupsLIst.forEach(groups->{
+                    chat.addFriendGroup(groups.getGroupId(),groups.getGroupName(),groups.getGroupHead());
+                });
+            }
+            //好友
+            List<UserFriendDto> userFirendList = msg.getUserFirendList();
+            if (userFirendList!=null){
+                userFirendList.forEach(friend->{
+                    chat.addFriendUser(false,friend.getFriendId(),friend.getFriendName(),friend.getFriendHead());
+                });
+            }
 
 
-            
         });
     }
 }

@@ -28,6 +28,7 @@ public class ChatEventDefine {
         min();
         quit();
         barChat();  //聊天
+        barFriend(); //好友
         doEventTextSend(); //发送消息事件[键盘]
         doEventTouchSend();//发送消息事件[按钮]
 
@@ -61,6 +62,16 @@ public class ChatEventDefine {
             bar_chat.setStyle("-fx-background-image: url('/fxml/chat/img/system/chat_0.png')");
             group_bar_chat.setVisible(false);
         }
+    }
+
+    //好友
+    private void barFriend() {
+        Button bar_friend = chatInit.$("bar_friend", Button.class);
+        Pane group_bar_friend = chatInit.$("group_bar_friend", Pane.class);
+        bar_friend.setOnAction(event -> {
+            switchBarChat(chatInit.$("bar_chat", Button.class), chatInit.$("group_bar_chat", Pane.class), false);
+            switchBarFriend(bar_friend, group_bar_friend, true);
+        });
     }
 
     // 发送消息事件[按钮]
@@ -141,7 +152,19 @@ public class ChatEventDefine {
 
         txt_input.clear();
 
+    }
 
+    //好友:开启与好友发送消息[点击发送消息时候触发->添加到对话框,选中,展示对话列表]
+    public void doEventOpenFriendUserSendMsg(Button sendMsgButton, String userFriendId, String userFriendNickName, String userFriendHead) {
+        sendMsgButton.setOnAction(event -> {
+            //1.添加好友到对话框
+            chatMethod.addTalkBox(0,0,userFriendId,userFriendNickName,userFriendHead,null,null,true);
+            //2. 切换到对话框窗口
+            switchBarChat(chatInit.$("bar_chat",Button.class),chatInit.$("group_bar_chat",Pane.class),true);
+            switchBarFriend(chatInit.$("bar_friend",Button.class),chatInit.$("group_bar_friend",Pane.class),false);
+            //3. 事件处理
+            chatEvent.doEventDelTalkUser(chatInit.userId,userFriendId);
+        });
     }
 
 

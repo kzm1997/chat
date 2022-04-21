@@ -2,9 +2,7 @@ package com.example.chatserverboot.socket.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.example.chatserverboot.application.UserService;
-import com.example.chatserverboot.domain.user.model.ChatRecordInfo;
-import com.example.chatserverboot.domain.user.model.TalkBoxInfo;
-import com.example.chatserverboot.domain.user.model.UserInfo;
+import com.example.chatserverboot.domain.user.model.*;
 import com.example.chatserverboot.infrastructure.common.Constants;
 import com.example.chatserverboot.infrastructure.common.SocketChannelUtil;
 import com.example.chatserverboot.socket.MyBizHandler;
@@ -12,8 +10,9 @@ import com.kzm.chat.protocal.login.LoginRequest;
 import com.kzm.chat.protocal.login.LoginResponse;
 import com.kzm.chat.protocal.login.dto.ChatRecordDto;
 import com.kzm.chat.protocal.login.dto.ChatTalkDto;
+import com.kzm.chat.protocal.login.dto.GroupsDto;
+import com.kzm.chat.protocal.login.dto.UserFriendDto;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -46,10 +45,6 @@ public class LoginHandler extends MyBizHandler<LoginRequest> {
 
         UserInfo userInfo = userService.getUserInfo(msg.getUserId());
 
-        loginResponse.setSuccess(true);
-        loginResponse.setUserHead(userInfo.getUserHead());
-        loginResponse.setUserId(userInfo.getUserId());
-        loginResponse.setUserNickName(userInfo.getUserNickName());
 
         // 3.2 对话框
         List<TalkBoxInfo> talkBoxInfoList = userService.queryTalkBoxInfoList(msg.getUserId());
@@ -112,7 +107,28 @@ public class LoginHandler extends MyBizHandler<LoginRequest> {
 
         }
 
-
+        //群组
+        List<GroupsInfo> groupsINfoList=userService.queryUserGroupInfoList(msg.getUserId());
+        for (GroupsInfo groupsInfo : groupsINfoList) {
+            GroupsDto groups=new GroupsDto();
+            groups.setGroupId(groupsInfo.getGroupId());
+            groups.setGroupName(groupsInfo.getGroupName());
+            groups.setGroupHead(groupsInfo.getGroupHead());
+            loginResponse.getGroupsLIst().add(groups);
+        }
+        //好友
+        List<UserFriendInfo> userFriendInfosList=userService.queryUserFriendInfoList(msg.getUserId());
+        for (UserFriendInfo userFriendInfo : userFriendInfosList) {
+            UserFriendDto userFriendDto=new UserFriendDto();
+            userFriendDto.setFriendId(userFriendInfo.getFriendId());
+            userFriendDto.setFriendHead(userFriendInfo.getFriendHead());
+            userFriendDto.setFriendName(userFriendInfo.getFriendName());
+            loginResponse.getUserFirendList().add(userFriendDto);
+        }
+        loginResponse.setSuccess(true);
+        loginResponse.setUserHead(userInfo.getUserHead());
+        loginResponse.setUserId(userInfo.getUserId());
+        loginResponse.setUserNickName(userInfo.getUserNickName());
         channel.writeAndFlush(loginResponse);
 
 

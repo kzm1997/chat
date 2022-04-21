@@ -2,6 +2,8 @@ package com.kzm.chat.protocal;
 
 import com.kzm.chat.protocal.login.LoginRequest;
 import com.kzm.chat.protocal.login.LoginResponse;
+import com.kzm.chat.protocal.msg.MsgGroupRequest;
+import com.kzm.chat.protocal.msg.MsgGroupResponse;
 import com.kzm.chat.protocal.msg.MsgRequest;
 import com.kzm.chat.protocal.msg.MsgResponse;
 
@@ -17,6 +19,8 @@ public abstract class Packet {
         packetType.put(Command.LoginResponse, LoginResponse.class);
         packetType.put(Command.MsgRequest, MsgRequest.class);
         packetType.put(Command.MsgResponse, MsgResponse.class);
+        packetType.put(Command.MsgGroupRequest, MsgGroupRequest.class);
+        packetType.put(Command.MsgGroupResponse, MsgGroupResponse.class);
         
     }
 

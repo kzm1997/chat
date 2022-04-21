@@ -1,13 +1,8 @@
 package com.example.chatserverboot.infrastructure.repository;
 
-import com.example.chatserverboot.domain.user.model.ChatRecordInfo;
-import com.example.chatserverboot.domain.user.model.TalkBoxInfo;
-import com.example.chatserverboot.domain.user.model.UserInfo;
+import com.example.chatserverboot.domain.user.model.*;
 import com.example.chatserverboot.domain.user.repository.IUserRepository;
-import com.example.chatserverboot.infrastructure.dao.IChatRecordDao;
-import com.example.chatserverboot.infrastructure.dao.IGroupsDao;
-import com.example.chatserverboot.infrastructure.dao.ITalkBoxDao;
-import com.example.chatserverboot.infrastructure.dao.IUserDao;
+import com.example.chatserverboot.infrastructure.dao.*;
 import com.example.chatserverboot.infrastructure.po.ChatRecord;
 import com.example.chatserverboot.infrastructure.po.Groups;
 import com.example.chatserverboot.infrastructure.po.TalkBox;
@@ -36,6 +31,12 @@ public class UserRepository implements IUserRepository {
 
     @Resource
     IChatRecordDao chatRecordDao;
+
+    @Resource
+    IUserGroupDao userGroupDao;
+
+    @Resource
+    IUserFriendDao userFriendDao;
 
 
     @Override
@@ -118,5 +119,35 @@ public class UserRepository implements IUserRepository {
         talkBox.setTalkId(talkId);
         talkBox.setTalkType(talkType);
         talkBoxDao.addTalkBox(talkBox);
+    }
+
+    @Override
+    public List<GroupsInfo> queryUserGroupInfoList(String userId) {
+        List<GroupsInfo> groupsInfosList = new ArrayList<>();
+        List<String> groupsIdList = userGroupDao.queryUserGroupsIdList(userId);
+        for (String groupsId : groupsIdList) {
+            Groups groups = groupsDao.queryGroupsById(groupsId);
+            GroupsInfo groupsInfo = new GroupsInfo();
+            groupsInfo.setGroupId(groups.getGroupId());
+            groupsInfo.setGroupName(groups.getGroupName());
+            groupsInfo.setGroupHead(groups.getGroupHead());
+            groupsInfosList.add(groupsInfo);
+        }
+        return groupsInfosList;
+    }
+
+    @Override
+    public List<UserFriendInfo> queryUserFriendInfoList(String userId) {
+        List<UserFriendInfo> userFriendInfoList = new ArrayList<>();
+        List<String> friendIdList = userFriendDao.queryUserFriendIdList(userId);
+        for (String friendId : friendIdList) {
+            User user = userDao.queryUserById(friendId);
+            UserFriendInfo userFriendInfo=new UserFriendInfo();
+            userFriendInfo.setFriendId(user.getUserId());
+            userFriendInfo.setFriendName(user.getUserNickName());
+            userFriendInfo.setFriendHead(user.getUserHead());
+            userFriendInfoList.add(userFriendInfo);
+        }
+        return userFriendInfoList;
     }
 }

@@ -21,6 +21,7 @@ public class ChatChannelInitializer extends ChannelInitializer<SocketChannel> {
         socketChannel.pipeline().addLast(new ObjDecoder());
         socketChannel.pipeline().addLast(new LoginHandler(uiService));
         socketChannel.pipeline().addLast(new MsgHandler(uiService));
+        socketChannel.pipeline().addLast(new MsgGroupHandler(uiService));
         socketChannel.pipeline().addLast(new ObjEncoder());
     }
 }

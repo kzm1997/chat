@@ -2,7 +2,10 @@ package com.kzm.chat.ui.view;
 
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
+import javafx.scene.control.ListView;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+
 
 /**
  * 窗口抽象类
@@ -33,6 +36,13 @@ public abstract class UIObject extends Stage {
             root.setCursor(Cursor.DEFAULT);
         });
     }
+
+    public void clearListViewSelectAll(ListView<Pane>... listViews){
+        for (ListView<Pane> listView : listViews) {
+            listView.getSelectionModel().clearSelection();
+        }
+    }
+
 
     public double x() {
         return getX();
