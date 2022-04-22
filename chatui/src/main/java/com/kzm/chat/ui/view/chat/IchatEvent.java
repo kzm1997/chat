@@ -1,5 +1,9 @@
 package com.kzm.chat.ui.view.chat;
 
+import javafx.scene.control.ListView;
+import javafx.scene.layout.Pane;
+
+
 import java.util.Date;
 
 public interface IchatEvent {
@@ -29,6 +33,23 @@ public interface IchatEvent {
      * @param talkId 对话框ID
      */
     void doEventDelTalkUser(String userId, String talkId);
+
+
+    /**
+     * 事件处理,查询用户到列表
+     * @param userId
+     * @param listView
+     */
+    void addFriendLuck(String userId, ListView<Pane> listView);
+
+
+    /**
+     * 事件处理；好友搜索[搜索后结果调用添加：addLuckFriend]
+     *
+     * @param userId 用户ID
+     * @param text   搜索关键字
+     */
+    void doFriendLuckSearch(String userId, String text);
     
     
 }

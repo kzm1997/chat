@@ -41,7 +41,7 @@ public class ElemntTalk {
         head=new Label();
         head.setPrefSize(50,50);
         head.setLayoutX(15);
-        head.setLayoutX(15);
+        head.setLayoutY(15);
         head.getStyleClass().add("element_head");
         head.setStyle(String.format("-fx-background-image: url('/fxml/chat/img/head/%s.png')", talkHead));
         children.add(head);

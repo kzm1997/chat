@@ -2,13 +2,14 @@ package com.kzm.chat.ui.view.chat;
 
 import com.kzm.chat.ui.view.chat.data.RemindCount;
 import com.kzm.chat.ui.view.chat.data.TalkBoxData;
-import com.kzm.chat.ui.view.chat.element.group_bar_friend.ElementFriendGroupList;
-import com.kzm.chat.ui.view.chat.element.group_bar_friend.ElementFriendTag;
-import com.kzm.chat.ui.view.chat.element.group_bar_friend.ElementFriendUserList;
+import com.kzm.chat.ui.view.chat.element.group_bar_chat.ElemntTalk;
+import com.kzm.chat.ui.view.chat.element.group_bar_friend.*;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 
 import java.util.List;
@@ -26,13 +27,71 @@ public class ChatView {
         this.ichatEvent = chatEvent;
 
         //1.好友列表添加工具方法('新朋友')
-
+        initAddFriendLuck();
+        //2. 好友列表添加‘公众号’
+        addFriendSubscription();
         //3. 好友群组框体
         addFriendGroupList();
         //4. 好友框体
         addFriendUserList();
 
 
+    }
+
+
+    private void addFriendSubscription() {
+        ListView<Pane> friendList = chatInit.$("friendList", ListView.class);
+        ObservableList<Pane> items = friendList.getItems();
+
+        ElementFriendTag elementFriendTag = new ElementFriendTag("公众号");
+        items.add(elementFriendTag.pane());
+
+        ElementFriendSubscription element = new ElementFriendSubscription();
+        Pane pane = element.pane();
+        items.add(pane);
+
+        pane.setOnMousePressed(event -> {
+            chatInit.clearListViewSelectAll(chatInit.$("userListView", ListView.class), chatInit.$("groupListView", ListView.class));
+            Pane subPane = element.subPane();
+            setContentPaneBox("itstack-naive-chat-ui-chat-friend-subscription", "公众号", subPane);
+        });
+    }
+    
+    private void initAddFriendLuck(){
+        ListView<Pane> friendList=chatInit.$("friendList",ListView.class);
+        ObservableList<Pane> items = friendList.getItems();
+        ElementFriendTag elementFriendTag=new ElementFriendTag("新的朋友");
+        items.add(elementFriendTag.pane());
+
+        ElementFriendLuck element=new ElementFriendLuck();
+        Pane pane=element.pane();
+        items.add(pane);
+        
+        pane.setOnMousePressed(event -> {
+            Pane friendLuckPane=element.friendLuckPane();
+            setContentPaneBox("itstack-naive-chat-ui-chat-friend-luck","新的朋友",friendLuckPane);
+            chatInit.clearListViewSelectAll(chatInit.$("userListView",ListView.class),chatInit.$("groupListView",ListView.class));
+            ListView<Pane> listView=element.friendLuckListView();
+            listView.getItems().clear();
+            ichatEvent.addFriendLuck(chatInit.userId,listView);
+        });
+        
+        //搜索框事件
+        TextField friendLuckSearch = element.friendLuckSearch();
+
+        // 键盘事件；搜索好友
+        friendLuckSearch.setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                String text = friendLuckSearch.getText();
+                if (null == text) text = "";
+                if (text.length() > 30) text = text.substring(0, 30);
+                text = text.trim();
+                ichatEvent.doFriendLuckSearch(chatInit.userId, text);
+                // 搜索清空元素
+                element.friendLuckListView().getItems().clear();
+            }
+        });
+        
     }
 
 
